@@ -1,0 +1,305 @@
+%% LyX 2.0.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[a4paper,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\setlength{\parskip}{\smallskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{url}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+\special{papersize=\the\paperwidth,\the\paperheight}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+<<echo=F>>=
+  if(exists(".orig.enc")) options(encoding = .orig.enc)
+@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+%\VignetteIndexEntry{SomaticCancerAlterations package}
+%\VignettePackage{SomaticCancerAlterations}
+
+% To compile this document
+% library('cacheSweave'); rm(list=ls()); Sweave('DESeq2.Rnw', driver=cacheSweaveDriver())
+
+<<style, eval=TRUE, echo=FALSE, results=tex>>=
+BiocStyle::latex()
+@
+
+%\usepackage{Sweave}
+\setkeys{Gin}{width=0.5\textwidth}
+
+% use a vertical rule for R output instead of prompts for R input
+%\usepackage{fancyvrb}
+%\definecolor{darkgray}{gray}{0.2}
+%\DefineVerbatimEnvironment{Sinput}{Verbatim}{xleftmargin=1em,formatcom={\color{darkgray}}}
+%\DefineVerbatimEnvironment{Soutput}{Verbatim}{xleftmargin=1em,frame=leftline,framerule=.6pt,rulecolor=\color{darkgray},framesep=1em,formatcom={\color{darkgray}}}
+%\fvset{listparameters={\setlength{\topsep}{0pt}}}
+%\renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
+
+\makeatother
+
+\usepackage{babel}
+\begin{document}
+
+\title{The \Biocpkg{SomaticCancerAlterations} package}
+
+
+\author{Julian Gehring, EMBL Heidelberg}
+
+\maketitle
+<<settings, echo=FALSE>>=
+set.seed(1)
+options(width=65)
+@
+
+\selectlanguage{english}%
+
+\section{Motivation}
+
+Over the last years, large efforts have been taken to characterize
+the somatic landscape of cancers. Many of the conducted studies make
+their results publicly available, providing a valuable resource for
+investigating beyond the level of individual cohorts. The \Biocpkg{SomaticCancerAlterations}
+package collects mutational data of several tumor types, currently
+focusing on the TCGA calls sets, and aims for a tight integration
+with \R{} and \Bioconductor{} workflows. In the following, we will
+illustrate how to access this data and give examples for use cases.
+
+<<load_package, echo=FALSE>>=
+library(SomaticCancerAlterations)
+library(GenomicRanges)
+library(ggbio)
+@
+
+\selectlanguage{english}%
+
+\section{Data Sets}
+
+The Cancer Genome Atlas (TCGA)%
+\footnote{\url{http://cancergenome.nih.gov}%
+} is a consortium effort to analyze a variety of tumor types, including
+gene expression, methylation, copy number changes, and somatic mutations%
+\footnote{\url{https://wiki.nci.nih.gov/display/TCGA/TCGA+Home}%
+}. With the \Biocpkg{SomaticCancerAlterations} package, we provide
+the callsets of somatic mutations for all publically available TCGA
+studies. Over time, more studies will be added, as they become available
+and unrestriced in their usage.
+
+To get started, we get a list of all available data sets and access
+the metadata associated with each study. 
+
+<<list_datasets>>=
+all_datasets = sca_list_datasets()
+print(all_datasets)
+meta_data = sca_metadata()
+print(meta_data)
+@
+
+\selectlanguage{english}%
+Next, we load a single dataset with the \Rfunction{sca\_load\_dataset}
+function.
+
+<<load_dataset>>=
+ov = sca_load_datasets("ov_tcga", merge = TRUE)
+@
+
+\selectlanguage{english}%
+
+\section{Exploring Mutational Data}
+
+The somatic variants of each study are represented as a \Rclass{GRanges}
+object, ordered by genomic positions. Additional columns describe
+properties of the variant and relate it the the affected gene, sample,
+and patient.
+
+<<print>>=
+head(ov, 3)
+@
+<<summary>>=
+with(mcols(ov), table(Variant_Classification, Variant_Type))
+@
+
+\selectlanguage{english}%
+With such data at hand, we can identify the samples and genes haboring
+the most mutations.
+
+<<tables>>=
+head(sort(table(ov$Sample_ID), decreasing = TRUE))
+head(sort(table(ov$Hugo_Symbol), decreasing = TRUE), 10)
+@
+
+\selectlanguage{english}%
+Considering all mutations of a study, we can compute the density of
+somatic variants along the genome. This can give us indications of
+mutational hotspots.
+
+<<calc_density>>=
+ov_density = mutation_density(ov, chrs = as.character(1:5))
+head(ov_density, 5)
+@
+<<plot_density, fig=TRUE, echo=TRUE, include=FALSE>>=
+p = autoplot(ov_density, aes(fill = density), layout = "karyogram") + xlab("Genomic Position") + ylab("Chromosome") + ggtitle("Density of Somatic Variants")
+print(p)
+@
+
+\selectlanguage{english}%
+\incfig{SomaticCancerAlterations-plot_density}{0.75\textwidth}{Mutational density}{A karyogram overview for the first five chromosomes, with the local density of somatic mutations coded in colors.}
+
+
+\section{Exploring Multiple Studies}
+
+Instead of focusing on an individual study, we can also import several
+at once. The results are stored as a \Rclass{GRangesList} in which
+each element corresponds to a single study. This can be merged into
+a single \Rclass{GRanges} object with \Rcode{merge = TRUE}.
+
+<<multiple_studies>>=
+three_studies = sca_load_datasets(all_datasets[1:3])
+print(elementLengths(three_studies))
+class(three_studies)
+@
+<<merge_studies>>=
+merged_studies = sca_load_datasets(all_datasets[1:3], merge = TRUE)
+class(merged_studies)
+@
+
+\selectlanguage{english}%
+We then compute the number of mutations per gene and study:
+
+<<mutated_genes_study>>=
+gene_study_count = with(mcols(merged_studies), table(Hugo_Symbol, Dataset))
+gene_study_count = gene_study_count[order(apply(gene_study_count, 1, sum), decreasing = TRUE), ]
+gene_study_count = addmargins(gene_study_count)
+head(gene_study_count)
+@
+
+\selectlanguage{english}%
+Further, we can subset the data by regions of interests, and compute
+descriptive statistics only on the subset.
+
+<<subset_studies>>=
+tp53_region = GRanges("17", IRanges(7571720, 7590863))
+tp53_studies = subsetByOverlaps(merged_studies, tp53_region)
+@
+
+\selectlanguage{english}%
+For example, we can investigate which type of somatic variants can
+be found in TP53 throughout the studies.
+
+<<variant_study_table>>=
+addmargins(table(tp53_studies$Variant_Classification, tp53_studies$Dataset))
+@
+
+\selectlanguage{english}%
+To go further, how many patients have mutations in TP53 for each cancer
+type?
+
+<<mutateted_genes>>=
+fraction_mutated_region = function(y, region) {
+	s = subsetByOverlaps(y, region)
+	m = length(unique(s$Patient_ID)) / metadata(s)$Number_Patients
+	return(m)
+}
+mutated_fraction = sapply(three_studies, fraction_mutated_region, tp53_region)
+mutated_fraction = data.frame(name = names(three_studies), fraction = mutated_fraction)
+@
+<<plot_mutated_genes, fig=TRUE, echo=TRUE, include=FALSE>>=
+p = ggplot(mutated_fraction) + ggplot2::geom_bar(aes(x = name, y = fraction, fill = name), stat = "identity") + ylim(0, 1) + xlab("Study") + ylab("Ratio") + theme_bw()
+print(p)
+@
+
+\selectlanguage{english}%
+\incfig{SomaticCancerAlterations-plot_mutated_genes}{0.75\textwidth}{Summary for TP53}{The fraction of patients with somatic mutations in TP53, for each study individually.}
+
+
+\section{Data Provenance}
+
+
+\subsection{TCGA Data}
+
+When importing the mutation data from the TCGA servers, we checked
+the data for consistency and fix common ambiguities in the annotation.
+
+
+\subsubsection{Processing}
+\begin{enumerate}
+\item Selection of the most recent somatic variant calls for each study.
+These were stored as '{*}.maf' files in the TCGA data directory%
+\footnote{\url{https://tcga-data.nci.nih.gov/tcgafiles/ftp_auth/distro_ftpusers/anonymous/tumor/}%
+}. If both manually curated and automatically generated variant calls
+were available, the curated version was chosen.
+\item Importing of the '{*}.maf' files into R and checking for consistency
+with the TCGA MAF specifications%
+\footnote{\url{https://wiki.nci.nih.gov/display/TCGA/Mutation+Annotation+Format+(MAF)+Specification}%
+}. Please note that these guidelines are currently only suggestions
+and most TCGA files violate some of these.
+\item Transformation of the imported variants into a 'GRanges' object, with
+one row for each reported variant. Only columns related to the genomic
+origin of the somatic variant were stored, additional columns describing
+higher-level effects, such as mutational consequences and alterations
+at the protein level, were dropped. The \Robject{seqlevels} information
+defining the chromosomal ranges were taken from the 1000genomes phase
+2 reference assembly%
+\footnote{\url{ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/reference/phase2_reference_assembly_sequence/}%
+}.
+\item The patient barcode was extracted from the sample barcode.
+\item Metadata describing the design and analysis of the study was extracted.
+\item The processed variants were written to disk, with one file for each
+study. The metadata for all studies were stored as a single, separate
+object.
+\end{enumerate}
+
+\subsubsection{Selection Criteria of Data Sets}
+
+We included data sets in the package that were
+\begin{itemize}
+\item conducted by the Broad Institute.
+\item cleared for unrestricted access and usage%
+\footnote{\url{http://cancergenome.nih.gov/abouttcga/policies/publicationguidelines}%
+}.
+\item sequenced with Illumina platforms.
+\end{itemize}
+
+\subsubsection{Consistency Check}
+
+According to the TCGA specifications for the 'MAF' files, we screened
+and corrected for common artifacts in the data regarding annotation.
+This included:
+\begin{itemize}
+\item Transfering of all genomic coordinates to the NCBI 37 reference notation
+(with the chromosome always depicted as 'MT')
+\item Checking of the entries against all allowed values for this field
+(currently for the columns \emph{Hugo\_Symbol}, \emph{Chromosome},
+\emph{Strand}, \emph{Variant\_Classification}, \emph{Variant\_Type},
+\emph{Reference\_Allele}, \emph{Tumor\_Seq\_Allele1}, \emph{Tumor\_Seq\_Allele2},
+\emph{Verification\_Status}, \emph{Validation\_Status}, \emph{Sequencer}).
+\end{itemize}
+
+\section{Alternatives}
+
+The TCGA data sets can be accessed in different ways. First, the \emph{TCGA}
+itself offers access to certain types of its collected data%
+\footnote{\url{https://tcga-data.nci.nih.gov/tcga/tcgaDownload.jsp}%
+}. Another approach has been taken by the \emph{cBioPortal for Cancer
+Genomics}%
+\footnote{\url{http://www.cbioportal.org/public-portal/}%
+} which has performed high-level analyses of several TCGA data sources,
+such as gene expression and copy number changes. This summarized data
+can be queried through an R interface%
+\footnote{\url{http://www.cbioportal.org/public-portal/cgds_r.jsp}%
+}.
+
+\newpage{}
+
+
+\section*{Session info}
+
+<<sessionInfo, results=tex, echo=FALSE>>=
+toLatex(sessionInfo(), locale=FALSE)
+@
+
+\end{document}

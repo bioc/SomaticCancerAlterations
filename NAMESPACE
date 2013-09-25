@@ -1,0 +1,9 @@
+
+import(GenomicRanges)
+
+importFrom(IRanges, elementLengths)
+importFrom(exomeCopy, subdivideGRanges)
+importFrom(stringr, str_match)
+importFrom(IRanges, IRanges)
+
+export(sca_list_datasets, sca_load_datasets, sca_metadata, mutation_density)
