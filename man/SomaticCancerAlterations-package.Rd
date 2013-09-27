@@ -1,6 +1,6 @@
 
 \name{SomaticCancerAlterations-package}
-    
+     
 \docType{package}
 
 \alias{SomaticCancerAlterations}
@@ -36,14 +36,17 @@
 }
 
 \author{
-  Julian Gehring <julian.gehring@embl.de>
-}
+  Julian Gehring (EMBL Heidelberg), with suggestions and contributions
+  from Bernd Fischer
   
+  Maintainer: Julian Gehring <julian.gehring@embl.de>
+}
+   
 \seealso{
   \code{\link[SomaticCancerAlterations]{SomaticCancerAlterations-functions}}
   
   \code{\link[SomaticCancerAlterations]{SomaticCancerAlterations-data}}
-}
-
+ }
+ 
 \keyword{package}
 \keyword{datasets}
