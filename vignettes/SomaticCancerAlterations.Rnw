@@ -197,6 +197,7 @@ mutated_fraction = sapply(three_studies, fraction_mutated_region, tp53_region)
 mutated_fraction = data.frame(name = names(three_studies), fraction = mutated_fraction)
 @
 <<plot_mutated_genes, fig=TRUE, echo=TRUE, include=FALSE>>=
+library(ggplot2)
 p = ggplot(mutated_fraction) + ggplot2::geom_bar(aes(x = name, y = fraction, fill = name), stat = "identity") + ylim(0, 1) + xlab("Study") + ylab("Ratio") + theme_bw()
 print(p)
 @

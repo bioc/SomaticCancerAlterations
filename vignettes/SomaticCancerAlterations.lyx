@@ -660,6 +660,10 @@ ction)
 \end_layout
 
 \begin_layout Chunk
+library(ggplot2)
+\end_layout
+
+\begin_layout Chunk
 p = ggplot(mutated_fraction) + ggplot2::geom_bar(aes(x = name, y = fraction,
  fill = name), stat = "identity") + ylim(0, 1) + xlab("Study") + ylab("Ratio")
  + theme_bw()
