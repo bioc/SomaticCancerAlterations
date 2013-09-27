@@ -1,12 +1,12 @@
 
-sca_list_datasets <- function() {
+scaListDatasets <- function() {
     x = data(package = "SomaticCancerAlterations")$results[ ,"Item"]
     x = x[(x != "meta")]
     return(x)
 }
 
-sca_load_datasets <- function(names, merge = FALSE) {
-    all_datasets = sca_list_datasets()
+scaLoadDatasets <- function(names, merge = FALSE) {
+    all_datasets = scaListDatasets()
     if(missing(names))
         names = all_datasets
     if(!all(idx <- names %in% all_datasets)) {
@@ -26,7 +26,7 @@ sca_load_datasets <- function(names, merge = FALSE) {
     return(res)
 }
 
-sca_metadata <- function() {
+scaMetadata <- function() {
     res = .load_dataset("meta")
     return(res)
 }

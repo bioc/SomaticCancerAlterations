@@ -6,4 +6,4 @@ importFrom(exomeCopy, subdivideGRanges)
 importFrom(stringr, str_match)
 importFrom(IRanges, IRanges)
 
-export(sca_list_datasets, sca_load_datasets, sca_metadata, mutation_density)
+export(scaListDatasets, scaLoadDatasets, scaMetadata, mutationDensity)

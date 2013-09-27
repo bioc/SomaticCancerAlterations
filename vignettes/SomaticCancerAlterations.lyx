@@ -116,22 +116,18 @@ Julian Gehring, EMBL Heidelberg
 \end_layout
 
 \begin_layout Chunk
-
 <<settings, echo=FALSE>>=
 \end_layout
 
 \begin_layout Chunk
-
 set.seed(1)
 \end_layout
 
 \begin_layout Chunk
-
 options(width=65)
 \end_layout
 
 \begin_layout Chunk
-
 @
 \end_layout
 
@@ -190,27 +186,22 @@ Bioconductor{}
 \end_layout
 
 \begin_layout Chunk
-
 <<load_package, echo=FALSE>>=
 \end_layout
 
 \begin_layout Chunk
-
 library(SomaticCancerAlterations)
 \end_layout
 
 \begin_layout Chunk
-
 library(GenomicRanges)
 \end_layout
 
 \begin_layout Chunk
-
 library(ggbio)
 \end_layout
 
 \begin_layout Chunk
-
 @
 \end_layout
 
@@ -287,32 +278,26 @@ To get started, we get a list of all available data sets and access the
 \end_layout
 
 \begin_layout Chunk
-
 <<list_datasets>>=
 \end_layout
 
 \begin_layout Chunk
-
-all_datasets = sca_list_datasets()
+all_datasets = scaListDatasets()
 \end_layout
 
 \begin_layout Chunk
-
 print(all_datasets)
 \end_layout
 
 \begin_layout Chunk
-
-meta_data = sca_metadata()
+meta_data = scaMetadata()
 \end_layout
 
 \begin_layout Chunk
-
 print(meta_data)
 \end_layout
 
 \begin_layout Chunk
-
 @
 \end_layout
 
@@ -338,17 +323,14 @@ _dataset}
 \end_layout
 
 \begin_layout Chunk
-
 <<load_dataset>>=
 \end_layout
 
 \begin_layout Chunk
-
-ov = sca_load_datasets("ov_tcga", merge = TRUE)
+ov = scaLoadDatasets("ov_tcga", merge = TRUE)
 \end_layout
 
 \begin_layout Chunk
-
 @
 \end_layout
 
@@ -376,22 +358,18 @@ Rclass{GRanges}
 \end_layout
 
 \begin_layout Chunk
-
 <<print>>=
 \end_layout
 
 \begin_layout Chunk
-
 head(ov, 3)
 \end_layout
 
 \begin_layout Chunk
-
 @
 \end_layout
 
 \begin_layout Chunk
-
 <<summary>>=
 \begin_inset Newline newline
 \end_inset
@@ -400,7 +378,6 @@ with(mcols(ov), table(Variant_Classification, Variant_Type))
 \end_layout
 
 \begin_layout Chunk
-
 @
 \end_layout
 
@@ -410,22 +387,18 @@ With such data at hand, we can identify the samples and genes haboring the
 \end_layout
 
 \begin_layout Chunk
-
 <<tables>>=
 \end_layout
 
 \begin_layout Chunk
-
 head(sort(table(ov$Sample_ID), decreasing = TRUE))
 \end_layout
 
 \begin_layout Chunk
-
 head(sort(table(ov$Hugo_Symbol), decreasing = TRUE), 10)
 \end_layout
 
 \begin_layout Chunk
-
 @
 \end_layout
 
@@ -436,43 +409,35 @@ Considering all mutations of a study, we can compute the density of somatic
 \end_layout
 
 \begin_layout Chunk
-
 <<calc_density>>=
 \end_layout
 
 \begin_layout Chunk
-
-ov_density = mutation_density(ov, chrs = as.character(1:5))
+ov_density = mutationDensity(ov, chrs = as.character(1:5))
 \end_layout
 
 \begin_layout Chunk
-
 head(ov_density, 5)
 \end_layout
 
 \begin_layout Chunk
-
 @
 \end_layout
 
 \begin_layout Chunk
-
 <<plot_density, fig=TRUE, echo=TRUE, include=FALSE>>=
 \end_layout
 
 \begin_layout Chunk
-
 p = autoplot(ov_density, aes(fill = density), layout = "karyogram") + xlab("Geno
 mic Position") + ylab("Chromosome") + ggtitle("Density of Somatic Variants")
 \end_layout
 
 \begin_layout Chunk
-
 print(p)
 \end_layout
 
 \begin_layout Chunk
-
 @
 \end_layout
 
@@ -546,47 +511,38 @@ Rcode{merge = TRUE}
 \end_layout
 
 \begin_layout Chunk
-
 <<multiple_studies>>=
 \end_layout
 
 \begin_layout Chunk
-
-three_studies = sca_load_datasets(all_datasets[1:3])
+three_studies = scaLoadDatasets(all_datasets[1:3])
 \end_layout
 
 \begin_layout Chunk
-
 print(elementLengths(three_studies))
 \end_layout
 
 \begin_layout Chunk
-
 class(three_studies)
 \end_layout
 
 \begin_layout Chunk
-
 @
 \end_layout
 
 \begin_layout Chunk
-
 <<merge_studies>>=
 \end_layout
 
 \begin_layout Chunk
-
-merged_studies = sca_load_datasets(all_datasets[1:3], merge = TRUE)
+merged_studies = scaLoadDatasets(all_datasets[1:3], merge = TRUE)
 \end_layout
 
 \begin_layout Chunk
-
 class(merged_studies)
 \end_layout
 
 \begin_layout Chunk
-
 @
 \end_layout
 
@@ -595,33 +551,27 @@ We then compute the number of mutations per gene and study:
 \end_layout
 
 \begin_layout Chunk
-
 <<mutated_genes_study>>=
 \end_layout
 
 \begin_layout Chunk
-
 gene_study_count = with(mcols(merged_studies), table(Hugo_Symbol, Dataset))
 \end_layout
 
 \begin_layout Chunk
-
 gene_study_count = gene_study_count[order(apply(gene_study_count, 1, sum),
  decreasing = TRUE), ]
 \end_layout
 
 \begin_layout Chunk
-
 gene_study_count = addmargins(gene_study_count)
 \end_layout
 
 \begin_layout Chunk
-
 head(gene_study_count)
 \end_layout
 
 \begin_layout Chunk
-
 @
 \end_layout
 
@@ -631,22 +581,18 @@ Further, we can subset the data by regions of interests, and compute descriptive
 \end_layout
 
 \begin_layout Chunk
-
 <<subset_studies>>=
 \end_layout
 
 \begin_layout Chunk
-
 tp53_region = GRanges("17", IRanges(7571720, 7590863))
 \end_layout
 
 \begin_layout Chunk
-
 tp53_studies = subsetByOverlaps(merged_studies, tp53_region)
 \end_layout
 
 \begin_layout Chunk
-
 @
 \end_layout
 
@@ -656,17 +602,14 @@ For example, we can investigate which type of somatic variants can be found
 \end_layout
 
 \begin_layout Chunk
-
 <<variant_study_table>>=
 \end_layout
 
 \begin_layout Chunk
-
 addmargins(table(tp53_studies$Variant_Classification, tp53_studies$Dataset))
 \end_layout
 
 \begin_layout Chunk
-
 @
 \end_layout
 
@@ -676,70 +619,57 @@ To go further, how many patients have mutations in TP53 for each cancer
 \end_layout
 
 \begin_layout Chunk
-
 <<mutateted_genes>>=
 \end_layout
 
 \begin_layout Chunk
-
 fraction_mutated_region = function(y, region) {
 \end_layout
 
 \begin_layout Chunk
-
 	s = subsetByOverlaps(y, region)
 \end_layout
 
 \begin_layout Chunk
-
 	m = length(unique(s$Patient_ID)) / metadata(s)$Number_Patients
 \end_layout
 
 \begin_layout Chunk
-
 	return(m)
 \end_layout
 
 \begin_layout Chunk
-
 }
 \end_layout
 
 \begin_layout Chunk
-
 mutated_fraction = sapply(three_studies, fraction_mutated_region, tp53_region)
 \end_layout
 
 \begin_layout Chunk
-
 mutated_fraction = data.frame(name = names(three_studies), fraction = mutated_fra
 ction)
 \end_layout
 
 \begin_layout Chunk
-
 @
 \end_layout
 
 \begin_layout Chunk
-
 <<plot_mutated_genes, fig=TRUE, echo=TRUE, include=FALSE>>=
 \end_layout
 
 \begin_layout Chunk
-
 p = ggplot(mutated_fraction) + ggplot2::geom_bar(aes(x = name, y = fraction,
  fill = name), stat = "identity") + ylim(0, 1) + xlab("Study") + ylab("Ratio")
  + theme_bw()
 \end_layout
 
 \begin_layout Chunk
-
 print(p)
 \end_layout
 
 \begin_layout Chunk
-
 @
 \end_layout
 
@@ -1087,17 +1017,14 @@ Session info
 \end_layout
 
 \begin_layout Chunk
-
 <<sessionInfo, results=tex, echo=FALSE>>=
 \end_layout
 
 \begin_layout Chunk
-
 toLatex(sessionInfo(), locale=FALSE)
 \end_layout
 
 \begin_layout Chunk
-
 @
 \end_layout
 

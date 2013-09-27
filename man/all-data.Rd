@@ -81,8 +81,8 @@
 }
 
 \examples{
-all_datasets = sca_list_datasets()
-grl = sca_load_datasets(all_datasets[1])
+all_datasets = scaListDatasets()
+grl = scaLoadDatasets(all_datasets[1])
 }
 
 \keyword{datasets}

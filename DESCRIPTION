@@ -2,8 +2,8 @@
 Package: SomaticCancerAlterations
 Type: Package
 Title: Somatic Cancer Alterations
-Version: 0.99.12
-Date: 2013-09-26
+Version: 0.99.13
+Date: 2013-09-27
 Author: Julian Gehring
 Maintainer: Julian Gehring <julian.gehring@embl.de>
 Imports: GenomicRanges, exomeCopy, stringr, IRanges

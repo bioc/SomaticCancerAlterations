@@ -56,7 +56,6 @@ set.seed(1)
 options(width=65)
 @
 
-\selectlanguage{english}%
 
 \section{Motivation}
 
@@ -75,7 +74,6 @@ library(GenomicRanges)
 library(ggbio)
 @
 
-\selectlanguage{english}%
 
 \section{Data Sets}
 
@@ -93,21 +91,19 @@ To get started, we get a list of all available data sets and access
 the metadata associated with each study. 
 
 <<list_datasets>>=
-all_datasets = sca_list_datasets()
+all_datasets = scaListDatasets()
 print(all_datasets)
-meta_data = sca_metadata()
+meta_data = scaMetadata()
 print(meta_data)
 @
 
-\selectlanguage{english}%
 Next, we load a single dataset with the \Rfunction{sca\_load\_dataset}
 function.
 
 <<load_dataset>>=
-ov = sca_load_datasets("ov_tcga", merge = TRUE)
+ov = scaLoadDatasets("ov_tcga", merge = TRUE)
 @
 
-\selectlanguage{english}%
 
 \section{Exploring Mutational Data}
 
@@ -123,7 +119,6 @@ head(ov, 3)
 with(mcols(ov), table(Variant_Classification, Variant_Type))
 @
 
-\selectlanguage{english}%
 With such data at hand, we can identify the samples and genes haboring
 the most mutations.
 
@@ -132,13 +127,12 @@ head(sort(table(ov$Sample_ID), decreasing = TRUE))
 head(sort(table(ov$Hugo_Symbol), decreasing = TRUE), 10)
 @
 
-\selectlanguage{english}%
 Considering all mutations of a study, we can compute the density of
 somatic variants along the genome. This can give us indications of
 mutational hotspots.
 
 <<calc_density>>=
-ov_density = mutation_density(ov, chrs = as.character(1:5))
+ov_density = mutationDensity(ov, chrs = as.character(1:5))
 head(ov_density, 5)
 @
 <<plot_density, fig=TRUE, echo=TRUE, include=FALSE>>=
@@ -146,7 +140,6 @@ p = autoplot(ov_density, aes(fill = density), layout = "karyogram") + xlab("Geno
 print(p)
 @
 
-\selectlanguage{english}%
 \incfig{SomaticCancerAlterations-plot_density}{0.75\textwidth}{Mutational density}{A karyogram overview for the first five chromosomes, with the local density of somatic mutations coded in colors.}
 
 
@@ -158,16 +151,15 @@ each element corresponds to a single study. This can be merged into
 a single \Rclass{GRanges} object with \Rcode{merge = TRUE}.
 
 <<multiple_studies>>=
-three_studies = sca_load_datasets(all_datasets[1:3])
+three_studies = scaLoadDatasets(all_datasets[1:3])
 print(elementLengths(three_studies))
 class(three_studies)
 @
 <<merge_studies>>=
-merged_studies = sca_load_datasets(all_datasets[1:3], merge = TRUE)
+merged_studies = scaLoadDatasets(all_datasets[1:3], merge = TRUE)
 class(merged_studies)
 @
 
-\selectlanguage{english}%
 We then compute the number of mutations per gene and study:
 
 <<mutated_genes_study>>=
@@ -177,7 +169,6 @@ gene_study_count = addmargins(gene_study_count)
 head(gene_study_count)
 @
 
-\selectlanguage{english}%
 Further, we can subset the data by regions of interests, and compute
 descriptive statistics only on the subset.
 
@@ -186,7 +177,6 @@ tp53_region = GRanges("17", IRanges(7571720, 7590863))
 tp53_studies = subsetByOverlaps(merged_studies, tp53_region)
 @
 
-\selectlanguage{english}%
 For example, we can investigate which type of somatic variants can
 be found in TP53 throughout the studies.
 
@@ -194,7 +184,6 @@ be found in TP53 throughout the studies.
 addmargins(table(tp53_studies$Variant_Classification, tp53_studies$Dataset))
 @
 
-\selectlanguage{english}%
 To go further, how many patients have mutations in TP53 for each cancer
 type?
 
@@ -212,7 +201,6 @@ p = ggplot(mutated_fraction) + ggplot2::geom_bar(aes(x = name, y = fraction, fil
 print(p)
 @
 
-\selectlanguage{english}%
 \incfig{SomaticCancerAlterations-plot_mutated_genes}{0.75\textwidth}{Summary for TP53}{The fraction of patients with somatic mutations in TP53, for each study individually.}
 
 

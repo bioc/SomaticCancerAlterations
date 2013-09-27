@@ -3,10 +3,10 @@
     
 \alias{SomaticCancerAlterations-functions}
 
-\alias{sca_list_datasets}
-\alias{sca_load_datasets}
-\alias{sca_metadata}
-\alias{mutation_density}
+\alias{scaListDatasets}
+\alias{scaLoadDatasets}
+\alias{scaMetadata}
+\alias{mutationDensity}
 
 \title{SomaticCancerAlterations functions}
 
@@ -15,36 +15,36 @@
 }
 
 \usage{
-sca_metadata()
+scaMetadata()
 
-sca_list_datasets()
+scaListDatasets()
 
-sca_load_datasets(names, merge = FALSE)
+scaLoadDatasets(names, merge = FALSE)
 
-mutation_density(x, bin_size = 1e6, chrs = seqnames(x))
+mutationDensity(x, binSize = 1e6, chrs = seqnames(x))
 }
 
 \arguments{
   \item{names}{Character vector with data set name(s) to load. The names
-    are the same as returned from 'sca_list_datasets()'.}
+    are the same as returned from 'scaListDatasets()'.}
   \item{merge}{Logical.  Should the results be a merged 'GRanges' object
   with data of all studies (TRUE), or a 'GenomicRangesList' with one list
   element per dataset (FALSE [default]).}
   \item{x}{GRanges object}
-  \item{bin_size}{Integer with the bin size used for computing the
+  \item{binSize}{Integer with the bin size used for computing the
     density of variants.}
   \item{chrs}{Character vector with the chrosomes/seqlevels to include
     (by default, all chromosomes are used.)}
 }
 
 \value{
-  \item{sca_metadata}{A data frame summarizing the available data
+  \item{scaMetadata}{A data frame summarizing the available data
     sets, with rows corresponding to data sets.}
-  \item{sca_list_datasets}{A character vector with all available study
+  \item{scaListDatasets}{A character vector with all available study
     names.}
   \item{sca_load_dataset}{A GenomicRangesList or GRanges objecs, depending
     on the 'merge' argument.}
-  \item{mutation_density}{A GRanges object, with ranges corresponding to
+  \item{mutationDensity}{A GRanges object, with ranges corresponding to
     bins along the genome.  The columns 'counts' and 'density' refer to
     the number and the fraction (given per 1Mbp) of alterations,
     respectively.}
@@ -54,7 +54,7 @@ mutation_density(x, bin_size = 1e6, chrs = seqnames(x))
   The 'sca_load_dataset' function makes it easy to load the data of a study
   directly into a variable.
 
-  The 'mutation_density' function computes the density of events in a
+  The 'mutationDensity' function computes the density of events in a
   binned-manner.
 }
   
@@ -71,13 +71,13 @@ mutation_density(x, bin_size = 1e6, chrs = seqnames(x))
 }
 
 \examples{
-meta_data = sca_metadata()
+meta_data = scaMetadata()
 head(meta_data)
 
-all_datasets = sca_list_datasets()
+all_datasets = scaListDatasets()
 head(all_datasets)
 
-grl = sca_load_datasets(all_datasets[1], merge = FALSE)
+grl = scaLoadDatasets(all_datasets[1], merge = FALSE)
 
-gr = sca_load_datasets(all_datasets[1], merge = TRUE)
+gr = scaLoadDatasets(all_datasets[1], merge = TRUE)
 }
