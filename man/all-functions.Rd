@@ -7,6 +7,8 @@
 \alias{scaLoadDatasets}
 \alias{scaMetadata}
 \alias{mutationDensity}
+\alias{ncbi2hg}
+\alias{hg2ncbi}
 
 \title{SomaticCancerAlterations functions}
 
@@ -22,6 +24,10 @@ scaListDatasets()
 scaLoadDatasets(names, merge = FALSE)
 
 mutationDensity(x, binSize = 1e6, chrs = seqnames(x))
+
+ncbi2hg(x)
+
+hg2ncbi(x)
 }
 
 \arguments{
@@ -48,6 +54,7 @@ mutationDensity(x, binSize = 1e6, chrs = seqnames(x))
     bins along the genome.  The columns 'counts' and 'density' refer to
     the number and the fraction (given per 1Mbp) of alterations,
     respectively.}
+  \item{ncbi2hg, hg2ncbi}{A GRanges object.}
 }
 
 \details{

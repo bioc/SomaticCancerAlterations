@@ -38,3 +38,17 @@ scaMetadata <- function() {
     res = get(name, envir = tmp_env)
     return(res)
 }
+
+
+ncbi2hg <- function(x) {
+    seqnameStyle(x) = "ucsc"
+    genome(x) = NA
+    return(x)
+}
+
+
+hg2ncbi <- function(x) {
+    seqnameStyle(x) = "ncbi"
+    genome(x) = NA
+    return(x)
+}
