@@ -5,5 +5,5 @@ importFrom(IRanges, elementLengths)
 importFrom(exomeCopy, subdivideGRanges)
 importFrom(stringr, str_match)
 importFrom(IRanges, IRanges)
-
-export(scaListDatasets, scaLoadDatasets, scaMetadata, mutationDensity)
+ 
+exportPattern("^[^\\.]")

@@ -52,3 +52,9 @@ hg2ncbi <- function(x) {
     genome(x) = NA
     return(x)
 }
+
+
+seqchr <- function(x) {
+    y = as.character(seqnames(x))
+    return(y)
+}
