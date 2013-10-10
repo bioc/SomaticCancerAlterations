@@ -402,64 +402,6 @@ head(sort(table(ov$Hugo_Symbol), decreasing = TRUE), 10)
 @
 \end_layout
 
-\begin_layout Standard
-Considering all mutations of a study, we can compute the density of somatic
- variants along the genome.
- This can give us indications of mutational hotspots.
-\end_layout
-
-\begin_layout Chunk
-<<calc_density>>=
-\end_layout
-
-\begin_layout Chunk
-ov_density = mutationDensity(ov, chrs = as.character(1:5))
-\end_layout
-
-\begin_layout Chunk
-head(ov_density, 5)
-\end_layout
-
-\begin_layout Chunk
-@
-\end_layout
-
-\begin_layout Chunk
-<<plot_density, fig=TRUE, echo=TRUE, include=FALSE>>=
-\end_layout
-
-\begin_layout Chunk
-p = autoplot(ov_density, aes(fill = density), layout = "karyogram") + xlab("Geno
-mic Position") + ylab("Chromosome") + ggtitle("Density of Somatic Variants")
-\end_layout
-
-\begin_layout Chunk
-print(p)
-\end_layout
-
-\begin_layout Chunk
-@
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-incfig{SomaticCancerAlterations-plot_density}{0.75
-\backslash
-textwidth}{Mutational density}{A karyogram overview for the first five chromosom
-es, with the local density of somatic mutations coded in colors.}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Section
 Exploring Multiple Studies
 \end_layout
