@@ -2,7 +2,7 @@
 Package: SomaticCancerAlterations
 Type: Package
 Title: Somatic Cancer Alterations
-Version: 0.99.20
+Version: 0.99.21
 Date: 2013-10-19
 Author: Julian Gehring (EMBL Heidelberg)
 Maintainer: Julian Gehring <julian.gehring@embl.de>
