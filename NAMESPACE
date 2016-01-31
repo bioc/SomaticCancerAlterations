@@ -1,7 +1,7 @@
 
 import(GenomicRanges)
+import(S4Vectors)
 
-importFrom(IRanges, elementLengths)
 importFrom(exomeCopy, subdivideGRanges)
 importFrom(stringr, str_match)
 importFrom(IRanges, IRanges)
