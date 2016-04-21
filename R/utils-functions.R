@@ -18,7 +18,7 @@ scaLoadDatasets <- function(names, merge = FALSE) {
     x = sapply(names, .load_dataset, simplify = FALSE, USE.NAMES = TRUE)
     res = GenomicRangesList(unlist(x))
     if(merge) {
-        datasets = rep(factor(rep(names(res), elementLengths(res))))
+        datasets = rep(factor(rep(names(res), lengths(res))))
         res = unlist(res)
         res$Dataset = datasets
     }
