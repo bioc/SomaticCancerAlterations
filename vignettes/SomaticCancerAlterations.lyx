@@ -461,7 +461,7 @@ three_studies = scaLoadDatasets(all_datasets[1:3])
 \end_layout
 
 \begin_layout Chunk
-print(elementLengths(three_studies))
+print(elementNROWS(three_studies))
 \end_layout
 
 \begin_layout Chunk
