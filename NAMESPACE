@@ -1,9 +1,6 @@
-
 import(GenomicRanges)
 import(S4Vectors)
 
-importFrom(exomeCopy, subdivideGRanges)
-importFrom(stringr, str_match)
 importFrom(IRanges, IRanges)
  
 exportPattern("^[^\\.]")

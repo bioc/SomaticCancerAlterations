@@ -36,10 +36,10 @@
 }
 
 \author{
-  Julian Gehring (EMBL Heidelberg), with suggestions and contributions
+  Julian Gehring, with suggestions and contributions
   from Bernd Fischer
   
-  Maintainer: Julian Gehring <julian.gehring@embl.de>
+  Maintainer: Julian Gehring
 }
    
 \seealso{

@@ -6,7 +6,6 @@
 \alias{scaListDatasets}
 \alias{scaLoadDatasets}
 \alias{scaMetadata}
-\alias{mutationDensity}
 
 \title{SomaticCancerAlterations functions}
 
@@ -20,21 +19,14 @@ scaMetadata()
 scaListDatasets()
 
 scaLoadDatasets(names, merge = FALSE)
-
-mutationDensity(x, binSize = 1e6, chrs = seqnames(x))
 }
 
 \arguments{
   \item{names}{Character vector with data set name(s) to load. The names
     are the same as returned from 'scaListDatasets()'.}
   \item{merge}{Logical.  Should the results be a merged 'GRanges' object
-  with data of all studies (TRUE), or a 'GenomicRangesList' with one list
+  with data of all studies (TRUE), or a 'GRangesList' with one list
   element per dataset (FALSE [default]).}
-  \item{x}{GRanges object}
-  \item{binSize}{Integer with the bin size used for computing the
-    density of variants.}
-  \item{chrs}{Character vector with the chrosomes/seqlevels to include
-    (by default, all chromosomes are used.)}
 }
 
 \value{
@@ -42,20 +34,13 @@ mutationDensity(x, binSize = 1e6, chrs = seqnames(x))
     sets, with rows corresponding to data sets.}
   \item{scaListDatasets}{A character vector with all available study
     names.}
-  \item{sca_load_dataset}{A GenomicRangesList or GRanges objecs, depending
+  \item{sca_load_dataset}{A GRangesList or GRanges objecs, depending
     on the 'merge' argument.}
-  \item{mutationDensity}{A GRanges object, with ranges corresponding to
-    bins along the genome.  The columns 'counts' and 'density' refer to
-    the number and the fraction (given per 1Mbp) of alterations,
-    respectively.}
 }
 
 \details{
   The 'sca_load_dataset' function makes it easy to load the data of a study
   directly into a variable.
-
-  The 'mutationDensity' function computes the density of events in a
-  binned-manner.
 }
   
 \references{

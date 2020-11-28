@@ -17,11 +17,11 @@ test_that("'scaLoadDatasets' works", {
     ds = sample(all_datasets, 1)
     ds2 = sample(all_datasets, 2)
 
-    expect_is( scaLoadDatasets(ds), "GenomicRangesList" )
-    expect_is( scaLoadDatasets(ds, merge = FALSE), "GenomicRangesList" )
+    expect_is( scaLoadDatasets(ds), "GRangesList" )
+    expect_is( scaLoadDatasets(ds, merge = FALSE), "GRangesList" )
     expect_is( scaLoadDatasets(ds, merge = TRUE), "GRanges" )
-    expect_is( scaLoadDatasets(ds2), "GenomicRangesList" )
-    expect_is( scaLoadDatasets(ds2, merge = FALSE), "GenomicRangesList" )
+    expect_is( scaLoadDatasets(ds2), "GRangesList" )
+    expect_is( scaLoadDatasets(ds2, merge = FALSE), "GRangesList" )
     expect_is( scaLoadDatasets(ds2, merge = TRUE), "GRanges" )
     expect_identical( length(scaLoadDatasets()), length(all_datasets) )
       

@@ -3,7 +3,7 @@ library(SomaticCancerAlterations)
 library(GenomicRanges)
 library(IRanges)
 library(stringr)
-#source("code/package/SomaticCancerAlterations/R/import-functions.R")
+source("import-functions.R")
 
 ### parameters ###
 open_access_cancer_types = c("GBM", "HNSC", "KIRC", "LUAD", "LUSC", "OV", "SKCM", "THCA")
