@@ -1,7 +1,7 @@
 Package: SomaticCancerAlterations
 Type: Package
 Title: Somatic Cancer Alterations
-Version: 1.37.0
+Version: 1.38.0
 Author: Julian Gehring
 Maintainer: Julian Gehring <jg-bioc@gmx.com>
 Imports: GenomicRanges, IRanges, S4Vectors
